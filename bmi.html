@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p>BMI Calculator</p>
+
+
+<!-- (A) HTML FORM -->
+
+<form>
+  Please enter your hight in inches:
+  <input type="number" id="inches" /> <br>
+  Please enter your weight in lbs:
+  <input type="number" id="lbs" "/> <br>
+
+</form>
+ 
+<p id="demo">Your BMI is:</p>
+
+<button type="button" onclick='convert()'>Click Me!</button>
+
+<script>
+
+function convert() {
+  let hight=document.getElementById("inches").value;
+  let weight=document.getElementById("lbs").value;
+  bmi = weight / hight**2 * 703;
+  document.getElementById("demo").innerHTML = bmi;
+
+}
+</script>
+</body>
+</html>
