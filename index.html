@@ -45,4 +45,68 @@
 
         h1 {
             color: #333;
-            margin-bottom: 10
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #666;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #apiResults {
+            margin-top: 20px;
+            color: #444;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Title Section -->
+    <div class="header">
+        Lab 7 - Application Layer <br>
+        Done by: Martita De La Fuente & Darren Cartagena
+    </div>
+
+    <div class="container">
+        <h1>Weather and Location Finder</h1>
+        <p>Enter your name to get personalized location and weather data!</p>
+        
+        <!-- Input field for the name -->
+        <input type="text" id="userName" placeholder="Enter your name here">
+        
+        <!-- Button to trigger the API call -->
+        <button onclick="fetchAllData()">Get Location & Weather Info</button>
+        
+        <!-- Placeholder for the API results -->
+        <div id="apiResults"></div>
+    </div>
+
+    <!-- Link to your JavaScript file -->
+    <script src="script.js"></script>
+
+</body>
+</html>
