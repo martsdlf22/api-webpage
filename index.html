@@ -22,14 +22,27 @@
             flex-direction: column;
         }
 
-        /* Title at the top */
+        /* Title at the top (Updated style for header) */
         .header {
             text-align: center;
             width: 100%;
-            background-color: #333;
-            color: #fff;
-            padding: 20px;
-            font-size: 20px;
+            padding: 30px;  /* Added extra padding for spacing */
+        }
+
+        /* Lab title style: Purple, cursive, and size doubled */
+        .header .lab-title {
+            font-family: 'Cursive', sans-serif;
+            font-size: 3em;  /* Double the size of the current title */
+            color: purple;
+            font-weight: bold;
+        }
+
+        /* Done by section (Beautiful font and color) */
+        .header .credits {
+            font-family: 'Verdana', sans-serif;
+            font-size: 1.2em;  /* Slightly larger size */
+            color: #FF6347;  /* A pretty color (Tomato) */
+            font-style: italic;
         }
 
         .container {
@@ -87,8 +100,12 @@
 
     <!-- Title Section -->
     <div class="header">
-        Lab 7 - Application Layer <br>
-        Done by: Martita De La Fuente & Darren Cartagena
+        <div class="lab-title">
+            Lab 7 - Application Layer
+        </div>
+        <div class="credits">
+            Done by: Martita De La Fuente & Darren Cartagena
+        </div>
     </div>
 
     <div class="container">
