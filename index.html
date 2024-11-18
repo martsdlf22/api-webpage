@@ -1,7 +1,4 @@
-
-         
-   
-             <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -255,4 +252,41 @@
             } else if (lat > 17.1 && lat < 17.5 && lon > -88.5 && lon < -89) {
                 return "Cayo District";
             } else if (lat > 18 && lat < 18.5 && lon > -89.5 && lon < -88.8) {
-               
+                return "Corozal District";
+            } else if (lat > 16.5 && lat < 17.1 && lon > -88 && lon < -87.5) {
+                return "Orange Walk District";
+            } else if (lat > 16.5 && lat < 17.3 && lon > -88.3 && lon < -88.9) {
+                return "Toledo District";
+            } else {
+                return "Stann Creek District";
+            }
+        }
+
+        // Function to fetch weather data from OpenWeatherMap
+        function getWeatherData(lat, lon) {
+            const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
+
+            fetch(weatherUrl)
+                .then(response => response.json())
+                .then(data => {
+                    // Extract weather data
+                    const temperature = data.main.temp;
+                    const description = data.weather[0].description;
+                    const humidity = data.main.humidity;
+
+                    // Show weather info in the results
+                    document.getElementById('apiResults').innerHTML += `
+                        <p>Weather Info:</p>
+                        <p>Temperature: ${temperature}°C</p>
+                        <p>Description: ${description}</p>
+                        <p>Humidity: ${humidity}%</p>
+                    `;
+                })
+                .catch(error => {
+                    console.error("Error fetching weather data:", error);
+                    document.getElementById('apiResults').innerHTML += "<p>Unable to retrieve weather data at this time.</p>";
+                });
+        }
+    </script>
+</body>
+</html>
