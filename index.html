@@ -94,6 +94,14 @@
             margin-top: 20px;
             color: #444;
         }
+
+        /* Map styles */
+        #map {
+            height: 300px;
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
@@ -116,14 +124,103 @@
         <input type="text" id="userName" placeholder="Enter your name here">
         
         <!-- Button to trigger the API call -->
-        <button onclick="fetchAllData()">Get Location & Weather Info</button>
+        <button onclick="fetchLocation()">Get Location Info</button>
         
         <!-- Placeholder for the API results -->
         <div id="apiResults"></div>
+
+        <!-- Map container -->
+        <div id="map"></div>
     </div>
 
-    <!-- Link to your JavaScript file -->
-    <script src="script.js"></script>
+    <!-- Include Leaflet.js for the map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
+    <script>
+        // Function to fetch location
+        function fetchLocation() {
+            // Get the user's name
+            const name = document.getElementById('userName').value;
+            if (name === "") {
+                alert("Please enter your name");
+                return;
+            }
+
+            // Use the Geolocation API to get the user's location
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(displayLocation, showError);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        // Function to display location and weather info
+        function displayLocation(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+
+            // Show location in the API Results section
+            document.getElementById('apiResults').innerHTML = `
+                <p>Hello! You're located at:</p>
+                <p>Latitude: ${lat.toFixed(4)}, Longitude: ${lon.toFixed(4)}</p>
+            `;
+
+            // Initialize the map and set the view to the user's location
+            const map = L.map('map').setView([lat, lon], 10);
+
+            // Add a tile layer (map background)
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            // Add a marker to show the user's location
+            L.marker([lat, lon]).addTo(map)
+                .bindPopup('You are here!')
+                .openPopup();
+
+            // Check which district the user is in (based on lat/lon)
+            const district = getDistrict(lat, lon);
+            document.getElementById('apiResults').innerHTML += `
+                <p>You're in the district of: ${district}</p>
+            `;
+        }
+
+        // Error handling for geolocation
+        function showError(error) {
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    alert("User denied the request for Geolocation.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert("Location information is unavailable.");
+                    break;
+                case error.TIMEOUT:
+                    alert("The request to get user location timed out.");
+                    break;
+                case error.UNKNOWN_ERROR:
+                    alert("An unknown error occurred.");
+                    break;
+            }
+        }
+
+        // Function to determine the district based on coordinates (simplified for demo)
+        function getDistrict(lat, lon) {
+            // This is a very simplified method; normally, you'd use actual geospatial data
+            if (lat > 17.5 && lat < 18.5 && lon > -88.3 && lon < -87.5) {
+                return "Belize District";
+            } else if (lat > 17.1 && lat < 17.5 && lon > -88.5 && lon < -89) {
+                return "Cayo District";
+            } else if (lat > 18 && lat < 18.5 && lon > -89.5 && lon < -88.8) {
+                return "Corozal District";
+            } else if (lat > 16.5 && lat < 17.1 && lon > -88 && lon < -87.5) {
+                return "Orange Walk District";
+            } else if (lat > 16.5 && lat < 17.3 && lon > -88.3 && lon < -88.9) {
+                return "Toledo District";
+            } else {
+                return "Stann Creek District";
+            }
+        }
+    </script>
 </body>
 </html>
