@@ -10,7 +10,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Times New Roman, sans-serif;
+            font-family: Arial, sans-serif;
         }
 
         body {
@@ -19,30 +19,6 @@
             align-items: center;
             height: 100vh;
             background-color: #f5f7fa;
-            flex-direction: column;
-        }
-
-        /* Title at the top (Updated style for header) */
-        .header {
-            text-align: center;
-            width: 100%;
-            padding: 30px;
-        }
-
-        /* Lab title style: Purple, cursive, and size doubled */
-        .header .lab-title {
-            font-family: 'Cursive', sans-serif;
-            font-size: 3em;
-            color: purple;
-            font-weight: bold;
-        }
-
-        /* Done by section (Beautiful font and color) */
-        .header .credits {
-            font-family: 'Verdana', sans-serif;
-            font-size: 1.2em;
-            color: #FF6347;
-            font-style: italic;
         }
 
         .container {
@@ -53,7 +29,6 @@
             max-width: 400px;
             padding: 20px;
             text-align: center;
-            margin-top: 20px;
         }
 
         h1 {
@@ -94,27 +69,9 @@
             margin-top: 20px;
             color: #444;
         }
-
-        /* Map styles */
-        #map {
-            height: 300px;
-            width: 100%;
-            margin-top: 20px;
-            border-radius: 8px;
-        }
     </style>
 </head>
 <body>
-
-    <!-- Title Section -->
-    <div class="header">
-        <div class="lab-title">
-            Lab 7 - Application Layer
-        </div>
-        <div class="credits">
-            Done by: Martita De La Fuente & Darren Cartagena
-        </div>
-    </div>
 
     <div class="container">
         <h1>Weather and Location Finder</h1>
@@ -124,24 +81,18 @@
         <input type="text" id="userName" placeholder="Enter your name here">
         
         <!-- Button to trigger the API call -->
-        <button onclick="fetchLocation()">Get Location & Weather Info</button>
+        <button onclick="fetchAllData()">Get Location & Weather Info</button>
         
         <!-- Placeholder for the API results -->
         <div id="apiResults"></div>
-
-        <!-- Map container -->
-        <div id="map"></div>
     </div>
 
-    <!-- Include Leaflet.js for the map -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
+    <!-- Link to your JavaScript file -->
     <script>
         const apiKey = 'YOUR_OPENWEATHERMAP_API_KEY'; // Replace with your OpenWeatherMap API key
 
         // Function to fetch location and weather data
-        function fetchLocation() {
+        function fetchAllData() {
             // Get the user's name
             const name = document.getElementById('userName').value;
             if (name === "") {
@@ -177,19 +128,6 @@
             
             // Call weather API for fixed location (San Ignacio, Cayo District)
             getWeatherData(lat, lon);
-
-            // Initialize the map and set the view to the fixed location
-            const map = L.map('map').setView([lat, lon], 10);
-
-            // Add a tile layer (map background)
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
-
-            // Add a marker to show the location
-            L.marker([lat, lon]).addTo(map)
-                .bindPopup('You are here!')
-                .openPopup();
         }
 
         // Function to display location and weather info based on geolocation
@@ -205,25 +143,6 @@
 
             // Call weather API
             getWeatherData(lat, lon);
-
-            // Initialize the map and set the view to the user's location
-            const map = L.map('map').setView([lat, lon], 10);
-
-            // Add a tile layer (map background)
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
-
-            // Add a marker to show the user's location
-            L.marker([lat, lon]).addTo(map)
-                .bindPopup('You are here!')
-                .openPopup();
-
-            // Check which district the user is in (based on lat/lon)
-            const district = getDistrict(lat, lon);
-            document.getElementById('apiResults').innerHTML += `
-                <p>You're in the district of: ${district}</p>
-            `;
         }
 
         // Error handling for geolocation
@@ -241,24 +160,6 @@
                 case error.UNKNOWN_ERROR:
                     alert("An unknown error occurred.");
                     break;
-            }
-        }
-
-        // Function to determine the district based on coordinates (simplified for demo)
-        function getDistrict(lat, lon) {
-            // This is a very simplified method; normally, you'd use actual geospatial data
-            if (lat > 17.5 && lat < 18.5 && lon > -88.3 && lon < -87.5) {
-                return "Belize District";
-            } else if (lat > 17.1 && lat < 17.5 && lon > -88.5 && lon < -89) {
-                return "Cayo District";
-            } else if (lat > 18 && lat < 18.5 && lon > -89.5 && lon < -88.8) {
-                return "Corozal District";
-            } else if (lat > 16.5 && lat < 17.1 && lon > -88 && lon < -87.5) {
-                return "Orange Walk District";
-            } else if (lat > 16.5 && lat < 17.3 && lon > -88.3 && lon < -88.9) {
-                return "Toledo District";
-            } else {
-                return "Stann Creek District";
             }
         }
 
@@ -288,5 +189,6 @@
                 });
         }
     </script>
+
 </body>
 </html>
