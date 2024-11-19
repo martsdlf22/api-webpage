@@ -217,8 +217,16 @@
         function getWeatherData(lat, lon) {
             const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
 
+            // Logging the API URL to help with debugging
+            console.log('Weather URL:', weatherUrl);
+
             fetch(weatherUrl)
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Weather data not found.");
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     // Extract weather data
                     const temperature = data.main.temp;
@@ -253,7 +261,3 @@
                 .bindPopup('You are here!')
                 .openPopup();
         }
-    </script>
-
-</body>
-</html>
