@@ -116,22 +116,28 @@
     <div class="image-map-area">
         <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Belize_map.svg" usemap="#belizeMap" id="belizeMap" alt="Belize Map">
         <map name="belizeMap">
-            <area shape="rect" coords="120,180,260,260" alt="Cayo District" href="#" id="cayoDistrict" title="Cayo District">
+            <!-- Coordinates for Cayo District (rough estimate) -->
+            <area shape="rect" coords="115,130,240,260" alt="Cayo District" href="#" id="cayoDistrict" title="Cayo District">
         </map>
     </div>
 
     <!-- Link to your JavaScript file -->
-    <script src="script.js"></script>
     <script>
         // Fetch location and weather data based on the name
         function fetchAllData() {
             var name = document.getElementById("userName").value.trim();
             var resultElement = document.getElementById("apiResults");
             
+            // Check if the name is Martita or Darren, and display the message accordingly
             if (name.toLowerCase() === "martita de la fuente" || name.toLowerCase() === "darren cartagena") {
                 // Highlight Cayo District if the name matches
                 document.getElementById("cayoDistrict").style.border = "2px solid red"; 
-                resultElement.innerHTML = `<p>Welcome, ${name}! You are from the Cayo District.</p>`;
+                
+                // Placeholder for Weather info
+                var weatherInfo = "Sunny, 30°C"; // This should be replaced with actual weather data from an API
+                
+                // Output the location and weather message
+                resultElement.innerHTML = `<p>Welcome, ${name}! You are from the Cayo District. The weather is currently: ${weatherInfo}.</p>`;
             } else {
                 resultElement.innerHTML = `<p>Hello, ${name}! We couldn't identify your location.</p>`;
             }
