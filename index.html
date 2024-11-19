@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Location and Weather Info</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <style>
         /* Basic reset */
         * {
@@ -82,15 +83,11 @@
             color: #444;
         }
 
-        /* Image map styling */
-        #belizeMap {
-            width: 80%;
-            max-width: 600px;
-            margin-top: 30px;
-        }
-
-        .image-map-area {
-            position: relative;
+        /* Map styling */
+        #map {
+            height: 400px;
+            width: 100%;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -112,32 +109,62 @@
         <div id="apiResults"></div>
     </div>
 
-    <!-- Image map of Belize -->
-    <div class="image-map-area">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Belize_map.svg" usemap="#belizeMap" id="belizeMap" alt="Belize Map">
-        <map name="belizeMap">
-            <!-- Coordinates for Cayo District (rough estimate) -->
-            <area shape="rect" coords="115,130,240,260" alt="Cayo District" href="#" id="cayoDistrict" title="Cayo District">
-        </map>
-    </div>
+    <!-- Map container -->
+    <div id="map"></div>
 
     <!-- Link to your JavaScript file -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
-        // Fetch location and weather data based on the name
+        // Static data for IP, location, and weather
+        const ipAddress = "190.197.10.90";
+        const weather = "Patchy rain nearby, 25.9°C";
+        const alternateWeather = "Broken clouds, 26.09°C";
+
+        // Coordinates for Placencia and San Ignacio (Cayo District)
+        const placenciaCoords = [16.5280, -88.3670];  // Placencia coordinates
+        const sanIgnacioCoords = [17.1590, -89.0700];  // San Ignacio coordinates
+
+        // Initialize map
+        const map = L.map('map').setView(placenciaCoords, 8); // Default view to Placencia
+
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Add marker for Placencia
+        const placenciaMarker = L.marker(placenciaCoords).addTo(map);
+        placenciaMarker.bindPopup("Placencia, Southern District").openPopup();
+
+        // Add marker for San Ignacio
+        const sanIgnacioMarker = L.marker(sanIgnacioCoords).addTo(map);
+        sanIgnacioMarker.bindPopup("San Ignacio, Cayo District").openPopup();
+
+        // Function to update results and map when user clicks the button
         function fetchAllData() {
             var name = document.getElementById("userName").value.trim();
             var resultElement = document.getElementById("apiResults");
-            
-            // Check if the name is Martita or Darren, and display the message accordingly
+
+            // Check if the name matches specific users and update location and weather
             if (name.toLowerCase() === "martita de la fuente" || name.toLowerCase() === "darren cartagena") {
-                // Highlight Cayo District if the name matches
-                document.getElementById("cayoDistrict").style.border = "2px solid red"; 
-                
-                // Placeholder for Weather info
-                var weatherInfo = "Sunny, 30°C"; // This should be replaced with actual weather data from an API
-                
-                // Output the location and weather message
-                resultElement.innerHTML = `<p>Welcome, ${name}! You are from the Cayo District. The weather is currently: ${weatherInfo}.</p>`;
+                // Show results in API result container
+                resultElement.innerHTML = `
+                    <p><strong>Public IP Address:</strong> ${ipAddress}</p>
+                    <p><strong>Location:</strong> ${name.toLowerCase() === "martita de la fuente" ? "San Ignacio, Cayo District, BZ" : "Placencia, Southern District, BZ"}</p>
+                    <p><strong>Weather:</strong> ${weather}</p>
+                    <p><strong>Alternate Weather:</strong> ${alternateWeather}</p>
+                `;
+
+                // Change map location based on the name
+                if (name.toLowerCase() === "martita de la fuente") {
+                    // Focus on San Ignacio for Martita
+                    map.setView(sanIgnacioCoords, 8);
+                    sanIgnacioMarker.openPopup();
+                } else {
+                    // Focus on Placencia for Darren
+                    map.setView(placenciaCoords, 8);
+                    placenciaMarker.openPopup();
+                }
             } else {
                 resultElement.innerHTML = `<p>Hello, ${name}! We couldn't identify your location.</p>`;
             }
